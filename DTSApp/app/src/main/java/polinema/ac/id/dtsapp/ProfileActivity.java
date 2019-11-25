@@ -63,4 +63,23 @@ public class ProfileActivity extends AppCompatActivity
         this.edtEmail.setText(this.currentUser.email);
         this.edtPhoneNumber.setText(this.currentUser.phoneNumber);
     }
+    private void syncData()
+    {
+        this.currentUser.password = this.edtPassword.getText().toString();
+        this.currentUser.email = this.edtEmail.getText().toString();
+        this.currentUser.phoneNumber = this.edtPhoneNumber.getText().toString();
+    }
+    public void onBtnSave_Click(View view)
+    {
+        // Memperbarui data di propery currentUser sehingga sesuai dengan nilai-nilai terakhir yang dientrykan oleh pengguna
+        this.syncData();
+
+        // Mendapatkan class DAO dari DTSAppDatabase
+        UserDao daoUser = AppDbProvider.getInstance(this).userDao();
+
+        // Menggunakan DAO untuk menyimpan data user saat ini yang sudah tersedia di property currentUser.
+        daoUser.update(this.currentUser);
+
+        Toast.makeText(this, "Your data has been updated!", Toast.LENGTH_SHORT).show();
+    }
 }
